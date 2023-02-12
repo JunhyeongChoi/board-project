@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <table>
+            <thead>
+                <th>아이디</th>
+                <th>제목</th>
+                <th>생성일자</th>
+            </thead>
+            <tbody>
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.id}">작성자</td>
+                    <td><a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${post.title}">작성자</a></td>
+                    <td th:text="${post.createDate}">생성일자</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
