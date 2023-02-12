@@ -4,3 +4,8 @@ spring:
     username: root
     password: xptmxm32132!
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true # DDL 출력
