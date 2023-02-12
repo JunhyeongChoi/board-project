@@ -7,5 +7,5 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
-      show-sql: true # DDL 출력
+      ddl-auto: none
+      show-sql: true
