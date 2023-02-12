@@ -2,10 +2,12 @@ package com.example.boardproject.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Getter
 @Entity
 public class Comment {
@@ -23,13 +25,11 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment() {
-    }
-
     @Builder
-    public Comment(String content, LocalDateTime createDate) {
+    public Comment(String content, LocalDateTime createDate, Post post) {
         this.content = content;
         this.createDate = createDate;
+        this.post = post;
     }
 
 }
