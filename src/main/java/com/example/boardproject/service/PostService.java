@@ -26,9 +26,14 @@ public class PostService {
     }
 
     // id로 특정 게시글 조회
-    public PostDto getPost(Long postId) {
+    public PostDto getPostDto(Long postId) {
         return postRepository.findById(postId)
                 .map(PostDto::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+    }
+
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 

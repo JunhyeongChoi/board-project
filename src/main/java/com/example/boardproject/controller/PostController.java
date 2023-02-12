@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/posts")
 @RequiredArgsConstructor
+@RequestMapping("/posts")
 @Controller
 public class PostController {
 
@@ -30,7 +30,7 @@ public class PostController {
     // 게시글 조회
     @GetMapping("{postId}")
     String post(@PathVariable Long postId, Model model) {
-        PostDto post = postService.getPost(postId);
+        PostDto post = postService.getPostDto(postId);
 
         model.addAttribute("post", post);
         return "post";
