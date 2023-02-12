@@ -22,6 +22,18 @@
             </tr>
             </tbody>
         </table>
+
+        <h5 th:text="|${#lists.size(post.comments)}개의 댓글이 있습니다.|"></h5>
+        <div>
+            <ul>
+                <li th:each="comment : ${post.comments}" th:text="${comment.content}"></li>
+            </ul>
+        </div>
+
+        <form th:action="@{|/comments/create/${post.id}|}" method="post">
+            <textarea name="content" id="content" rows="15"></textarea>
+            <input type="submit" value="등록">
+        </form>
     </div>
 </body>
 </html>
