@@ -12,7 +12,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
@@ -27,8 +27,9 @@ public class Comment {
     }
 
     @Builder
-    public Comment(String content) {
+    public Comment(String content, LocalDateTime createDate) {
         this.content = content;
+        this.createDate = createDate;
     }
 
 }

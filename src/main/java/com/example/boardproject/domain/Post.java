@@ -14,7 +14,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(length = 200, nullable = false)
     private String title;
@@ -31,9 +31,10 @@ public class Post {
     }
 
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, LocalDateTime createDate) {
         this.title = title;
         this.content = content;
+        this.createDate = createDate;
     }
 
 }
