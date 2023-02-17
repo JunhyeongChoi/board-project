@@ -5,6 +5,7 @@ import com.example.boardproject.service.CommentService;
 import com.example.boardproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +20,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/create/{id}")
-    public String createAnswer(@PathVariable Long id, @RequestParam String content) {
-        Post post = postService.getPost(id);
-
-        commentService.saveComment(post, content);
+    public String createAnswer(@PathVariable Long id, @RequestParam String content, Model model) {
+        // TODO: 답변 저장
 
         return "redirect:/posts/" + id;
     }
