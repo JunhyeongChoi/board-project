@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>새 게시글 등록</title>
+        <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+    </head>
+
+    <body>
+        <header class="p-3 bg-dark text-white">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a id="home" href="/" class="nav-link px-2 text-secondary">Home</a></li>
+                    </ul>
+
+                    <div class="text-end">
+                        <span id="username" class="text-white me-2">username</span>
+                        <a role="button" id="login" class="btn btn-outline-light me-2">Login</a>
+                        <a role="button" id="logout" class="btn btn-outline-light me-2">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <br><br><br>
+
+        <div class="container">
+            <header id="article-form-header" class="py-5 text-center">
+                <h2>게시글 작성</h2>
+            </header>
+
+            <form th:action="@{/posts/create}" method="post">
+                <div class="row mb-3 justify-content-md-center">
+                    <label for="title" class="col-sm-2 col-lg-1 col-form-label text-sm-end">제목</label>
+                    <div class="col-sm-8 col-lg-9">
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                </div>
+                <div class="row mb-3 justify-content-md-center">
+                    <label for="content" class="col-sm-2 col-lg-1 col-form-label text-sm-end">내용</label>
+                    <div class="col-sm-8 col-lg-9">
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+                </div>
+                <div class="row mb-5 justify-content-md-center">
+                    <div class="col-sm-10 d-grid gap-2 d-sm-flex justify-content-sm-end">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        <button type="button" class="btn btn-danger" onclick="history.back()">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <br><br><br>
+
+        <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <p class="col-md-4 mb-0 text-muted">&copy; 2023 JH, Inc</p>
+
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+            </ul>
+        </footer>
+    </body>
+</html>

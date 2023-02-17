@@ -2,10 +2,11 @@ package com.example.boardproject.dto.request;
 
 import com.example.boardproject.domain.Post;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Getter @Setter
 public class PostSaveRequest {
 
     private String title;
