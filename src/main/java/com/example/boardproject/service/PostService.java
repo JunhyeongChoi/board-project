@@ -2,8 +2,7 @@ package com.example.boardproject.service;
 
 import com.example.boardproject.domain.Post;
 import com.example.boardproject.dto.PostDto;
-import com.example.boardproject.dto.request.PostSaveRequest;
-import com.example.boardproject.dto.request.PostUpdateRequest;
+import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,17 +37,17 @@ public class PostService {
     }
 
     // 게시글 저장
-    public void savePost(PostSaveRequest postSaveRequest) {
-        postRepository.save(postSaveRequest.toEntity());
+    public void savePost(PostRequestDto postRequestDto) {
+        postRepository.save(postRequestDto.toEntity());
     }
 
     // 게시글 수정
-    public void updatePost(Long postId, PostUpdateRequest postUpdateRequest) {
+    public void updatePost(Long postId, PostRequestDto postRequestDto) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
-        if (post.getTitle() != null) post.setTitle(postUpdateRequest.getTitle());
-        if (post.getContent() != null) post.setContent(postUpdateRequest.getContent());
+        if (post.getTitle() != null) post.setTitle(postRequestDto.getTitle());
+        if (post.getContent() != null) post.setContent(postRequestDto.getContent());
     }
 
     // 게시글 삭제

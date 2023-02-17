@@ -1,14 +1,15 @@
 package com.example.boardproject.controller;
 
 import com.example.boardproject.dto.PostDto;
-import com.example.boardproject.dto.request.PostSaveRequest;
-import com.example.boardproject.dto.request.PostUpdateRequest;
+import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -37,24 +38,25 @@ public class PostController {
     }
 
     // 게시글 작성
-    @ResponseBody
-    @PostMapping
-    void create(@RequestBody PostSaveRequest postSaveRequest) {
-        postService.savePost(postSaveRequest);
+    @GetMapping("/create")
+    public String postCreate() {
+        return "form";
+    }
+
+    @PostMapping("/create")
+    public String postCreate(@Valid PostRequestDto postRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
+
+        postService.savePost(postRequestDto);
+        return "redirect:/posts";
     }
 
     // 게시글 수정
-    @ResponseBody
-    @PutMapping("{postId}")
-    void update(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
-        postService.updatePost(postId, postUpdateRequest);
-    }
+
 
     // 게시글 삭제
-    @ResponseBody
-    @DeleteMapping("{postId}")
-    void delete(@PathVariable Long postId) {
-        postService.deletePost(postId);
-    }
+
 
 }

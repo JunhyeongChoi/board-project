@@ -8,23 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
 </head>
 <body>
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a id="home" href="/" class="nav-link px-2 text-secondary">Home</a></li>
-                </ul>
-
-                <div class="text-end">
-                    <span id="username" class="text-white me-2">username</span>
-                    <a role="button" id="login" class="btn btn-outline-light me-2">Login</a>
-                    <a role="button" id="logout" class="btn btn-outline-light me-2">Logout</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <br><br><br>
+    <div th:replace="~{header :: headerFragment}"></div>
 
     <main id="article-main" class="container" >
         <header id="article-header" class="py-5 text-center">
@@ -59,26 +43,22 @@
             <section>
                 <h5 th:text="|${#lists.size(post.comments)}개의 댓글이 있습니다.|"></h5>
                 <br>
-                <form class="row g-3" id="comment-form">
-                    <input type="hidden" class="article-id">
+                <form th:action="@{/comments/create/{id}(id = ${post.id})}" method="post" class="row g-3">
                     <div class="col-md-9 col-lg-8">
-                        <label for="comment-textbox" hidden>댓글</label>
-                        <textarea class="form-control" id="comment-textbox" placeholder="댓글 작성.." rows="3" required></textarea>
+                        <textarea class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                     </div>
                     <div class="col-md-3 col-lg-4">
-                        <label for="comment-submit" hidden>댓글 쓰기</label>
-                        <button class="btn btn-primary" id="comment-submit" type="submit">등록</button>
+                        <button class="btn btn-primary" type="submit">등록</button>
                     </div>
                 </form>
 
                 <ul id="article-comments" th:each="comment : ${post.comments}" class="row col-md-10 col-lg-8 pt-3">
                     <li>
                         <form class="comment-form">
-                            <input type="hidden" class="article-id">
                             <div class="row">
                                 <div class="col-md-10 col-lg-9">
 <!--                                    <strong th:text="${comment.username}">Junhyeong</strong>-->
-                                    <small th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-17</small>
+                                    <small th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-17</small>
                                     <p th:text="${comment.content}">
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
                                         Lorem ipsum dolor sit amet
@@ -114,15 +94,7 @@
             </nav>
         </div>
 
-        <br><br><br>
-
-        <footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-            <p class="col-md-4 mb-0 text-muted">&copy; 2023 JH, Inc</p>
-
-            <ul class="nav col-md-4 justify-content-end">
-                <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
-            </ul>
-        </footer>
+        <div th:replace="~{footer :: footerFragment}"></div>
     </main>
 </body>
 </html>
