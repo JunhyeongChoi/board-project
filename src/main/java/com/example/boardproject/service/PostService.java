@@ -5,25 +5,32 @@ import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
 
     // 전체 게시글 조회
-    public List<PostDto> getPosts() {
-        return postRepository.findAll()
-                .stream().map(PostDto::toDto)
-                .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<PostDto> getPosts(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostDto::toDto);
     }
 
+    @Transactional(readOnly = true)
     // id로 특정 게시글 조회
     public PostDto getPostDto(Long postId) {
         return postRepository.findById(postId)
@@ -31,6 +38,7 @@ public class PostService {
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
     }
 
+    @Transactional(readOnly = true)
     public Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
