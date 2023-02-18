@@ -11,11 +11,11 @@
         <div th:replace="~{header :: headerFragment}"></div>
 
         <div class="container">
-            <header id="article-form-header" class="py-5 text-center">
+            <header class="py-5 text-center">
                 <h2>게시글 작성</h2>
             </header>
 
-            <form th:action="@{/posts/create}" method="post">
+            <form th:action="@{/post/create}" method="post">
                 <div class="row mb-3 justify-content-md-center">
                     <label for="title" class="col-sm-2 col-lg-1 col-form-label text-sm-end">제목</label>
                     <div class="col-sm-8 col-lg-9">
@@ -36,8 +36,6 @@
                 </div>
             </form>
         </div>
-
-        <br><br><br>
 
         <div th:replace="~{footer :: footerFragment}"></div>
     </body>
