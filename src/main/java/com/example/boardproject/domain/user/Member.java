@@ -1,4 +1,4 @@
-package com.example.boardproject.domain;
+package com.example.boardproject.domain.user;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +27,14 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    public Member() {
+    }
+
     @Builder
-    public User(String username, String password, String email) {
+    public Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
+
 }

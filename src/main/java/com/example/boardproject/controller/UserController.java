@@ -1,7 +1,7 @@
 package com.example.boardproject.controller;
 
 import com.example.boardproject.dto.request.UserRequestDto;
-import com.example.boardproject.service.UserService;
+import com.example.boardproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,12 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+
+    // 로그인
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     // signup 에서 검증 때문에 userRequestDto 가 필요하므로 파라미터로 지정
     @GetMapping("/signup")
@@ -42,7 +48,7 @@ public class UserController {
             userService.saveUser(userRequestDto);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
-            bindingResult.reject("userDuplicated", "이미 등록된 사용자입니다.");
+            bindingResult.reject("userDuplicated", "아이디 또는 이메일이 이미 존재합니다.");
             return "signup";
         } catch(Exception e) {
             e.printStackTrace();
