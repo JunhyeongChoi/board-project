@@ -1,6 +1,6 @@
 package com.example.boardproject.service;
 
-import com.example.boardproject.domain.User;
+import com.example.boardproject.domain.user.User;
 import com.example.boardproject.dto.request.UserRequestDto;
 import com.example.boardproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
