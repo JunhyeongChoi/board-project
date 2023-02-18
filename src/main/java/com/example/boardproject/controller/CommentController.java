@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RequestMapping("/comments")
+@RequestMapping("/comment")
 @Controller
 public class CommentController {
 
@@ -35,7 +35,7 @@ public class CommentController {
         }
 
         commentService.saveComment(post, commentRequestDto.getContent());
-        return "redirect:/posts/" + id;
+        return "redirect:/post/" + id;
     }
 
 }

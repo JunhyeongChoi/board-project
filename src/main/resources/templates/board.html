@@ -61,7 +61,7 @@
                             <td th:text="${posts.getTotalElements - (posts.number * posts.size) - loop.index}"></td>
                             <td>
                                 <a id="titleH"
-                                   th:href="@{/posts/{id}(id = ${post.id})}"
+                                   th:href="@{/post/{id}(id = ${post.id})}"
                                    th:text="${post.title}">
                                     제목
                                 </a>
@@ -81,7 +81,7 @@
 
             <div class="row">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a class="btn btn-primary me-md-2" role="button" href="/posts/create">글 작성</a>
+                    <a class="btn btn-primary me-md-2" role="button" href="/post/create">글 작성</a>
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
                         <li class="page-item">
                             <a class="page-link"
                                th:text="'previous'"
-                               th:href="@{/posts(page=${posts.number - 1})}"
+                               th:href="@{/post(page=${posts.number - 1})}"
                                th:class="'page-link' + (${posts.number} <= 0 ? ' disabled' : '')">
                                 <span>Previous</span>
                             </a>
@@ -102,14 +102,14 @@
 
                         <li th:class="page-item" th:each="pageNumber : ${barNumbers}">
                             <a th:text="${pageNumber + 1}"
-                               th:href="@{/posts(page=${pageNumber})}"
+                               th:href="@{/post(page=${pageNumber})}"
                                th:class="'page-link' + (${pageNumber} == ${posts.number} ? ' disabled' : '')">
                             </a>
                         </li>
 
                         <li class="page-item">
                             <a th:text="'next'"
-                               th:href="@{/posts(page=${posts.number + 1})}"
+                               th:href="@{/post(page=${posts.number + 1})}"
                                th:class="'page-link' + (${posts.number} >= ${posts.totalPages - 1} ? ' disabled' : '')">
                                 <span>Next</span>
                             </a>

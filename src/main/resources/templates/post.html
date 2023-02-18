@@ -10,30 +10,30 @@
 <body>
     <div th:replace="~{header :: headerFragment}"></div>
 
-    <main id="article-main" class="container" >
-        <header id="article-header" class="py-5 text-center">
+    <main class="container" >
+        <header class="py-5 text-center">
             <h2 th:text="${post.title}">제목</h2>
         </header>
 
         <div class="row g-5">
             <section class="col-md-3 col-lg-4 order-md-last">
                 <aside>
-<!--                    <p><span id="nickname">Junhyeong</span></p>-->
+<!--                    <p><span>Junhyeong</span></p>-->
                     <p th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-17</p>
                 </aside>
             </section>
 
-            <article id="article-content" class="col-md-9 col-lg-8">
+            <article class="col-md-9 col-lg-8">
                 <pre th:text="${post.content}">본문</pre>
             </article>
         </div>
 
         <br><br><br><br><br><br>
 
-        <div class="row g-5" id="article-buttons">
-            <form id="delete-article-form">
+        <div class="row g-5">
+            <form>
                 <div class="pb-5 d-grid gap-2 d-md-block">
-                    <a class="btn btn-success me-md-2" role="button" id="update-article">수정</a>
+                    <a class="btn btn-success me-md-2" role="button">수정</a>
                     <button class="btn btn-danger me-md-2" type="submit">삭제</button>
                 </div>
             </form>
@@ -43,7 +43,7 @@
             <section>
                 <h5 th:text="|${#lists.size(post.comments)}개의 댓글이 있습니다.|"></h5>
                 <br>
-                <form th:action="@{/comments/create/{id}(id = ${post.id})}" method="post" class="row g-3">
+                <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3">
                     <div class="col-md-9 col-lg-8">
                         <textarea class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                     </div>
@@ -52,7 +52,7 @@
                     </div>
                 </form>
 
-                <ul id="article-comments" th:each="comment : ${post.comments}" class="row col-md-10 col-lg-8 pt-3">
+                <ul th:each="comment : ${post.comments}" class="row col-md-10 col-lg-8 pt-3">
                     <li>
                         <form class="comment-form">
                             <div class="row">
@@ -65,7 +65,7 @@
                                     </p>
                                 </div>
                                 <div class="col-2 mb-3 align-self-center">
-                                    <button type="submit" class="btn btn-outline-danger" id="delete-comment-button">삭제</button>
+                                    <button type="submit" class="btn btn-outline-danger">삭제</button>
                                 </div>
                             </div>
                         </form>
@@ -78,7 +78,7 @@
         <br><br>
 
         <div class="row g-5">
-            <nav id="pagination" aria-label="Page navigation">
+            <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item">
                         <a class="page-link" href="#" aria-label="Previous">

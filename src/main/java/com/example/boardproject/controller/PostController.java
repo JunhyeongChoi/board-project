@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/post")
 @Controller
 public class PostController {
 
@@ -58,7 +58,7 @@ public class PostController {
         }
 
         postService.savePost(postRequestDto);
-        return "redirect:/posts";
+        return "redirect:/post";
     }
 
     // 게시글 수정
