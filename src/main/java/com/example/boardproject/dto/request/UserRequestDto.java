@@ -1,9 +1,8 @@
 package com.example.boardproject.dto.request;
 
-import com.example.boardproject.domain.User;
+import com.example.boardproject.domain.user.Member;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,8 +29,8 @@ public class UserRequestDto {
     @Email
     private String email;
 
-    public User toEntity() {
-        return User.builder()
+    public Member toEntity() {
+        return Member.builder()
                 .username(username)
                 .password(encode(password1))
                 .email(email)
