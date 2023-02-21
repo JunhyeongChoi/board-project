@@ -22,6 +22,20 @@ public class PostRequestDto {
 
     private Member member;
 
+    // 수정 컨트롤러에서 사용
+    @Builder
+    public PostRequestDto(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public static PostRequestDto toDto(Post post) {
+        return PostRequestDto.builder()
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+    }
+
     public Post toEntity() {
         return Post.builder()
                 .title(title)
