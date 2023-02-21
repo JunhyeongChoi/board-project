@@ -2,6 +2,7 @@ package com.example.boardproject.dto;
 
 import com.example.boardproject.domain.Comment;
 import com.example.boardproject.domain.Post;
+import com.example.boardproject.domain.user.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,14 +18,21 @@ public class PostDto {
     private String content;
     private LocalDateTime createDate;
     private List<Comment> comments = new ArrayList<>();
+    private Member member;
 
     @Builder
-    public PostDto(Long id, String title, String content, LocalDateTime createDate, List<Comment> comments) {
+    public PostDto(Long id,
+                   String title,
+                   String content,
+                   LocalDateTime createDate,
+                   List<Comment> comments,
+                   Member member) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createDate = createDate;
         this.comments = comments;
+        this.member = member;
     }
 
     public static PostDto toDto(Post post) {
@@ -34,6 +42,7 @@ public class PostDto {
                 .content(post.getContent())
                 .createDate(post.getCreateDate())
                 .comments(post.getComments())
+                .member(post.getMember())
                 .build();
     }
 
