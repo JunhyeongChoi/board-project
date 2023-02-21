@@ -1,20 +1,24 @@
 package com.example.boardproject.controller;
 
+import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.service.PagingService;
 import com.example.boardproject.service.PostService;
+import com.example.boardproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class PostController {
 
     private final PostService postService;
     private final PagingService pagingService;
+    private final UserService userService;
 
     // 게시판 조회
     @GetMapping
@@ -45,19 +50,24 @@ public class PostController {
         return "post";
     }
 
-    // 게시글 작성
+    // 게시글 작성 폼 (로그인 필요)
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String postCreate() {
         return "form";
     }
 
+    // 게시글 작성 (로그인 필요)
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String postCreate(@Valid PostRequestDto postRequestDto, BindingResult bindingResult) {
+    public String postCreate(@Valid PostRequestDto postRequestDto, BindingResult bindingResult, Principal principal) {
+        Member member = userService.getMember(principal.getName());
+
         if (bindingResult.hasErrors()) {
             return "form";
         }
 
-        postService.savePost(postRequestDto);
+        postService.savePost(postRequestDto, member);
         return "redirect:/post";
     }
 

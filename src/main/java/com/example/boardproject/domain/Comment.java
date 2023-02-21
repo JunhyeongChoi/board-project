@@ -1,5 +1,6 @@
 package com.example.boardproject.domain;
 
+import com.example.boardproject.domain.user.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private Member member;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
@@ -26,10 +30,11 @@ public class Comment {
     private Post post;
 
     @Builder
-    public Comment(String content, LocalDateTime createDate, Post post) {
+    public Comment(String content, LocalDateTime createDate, Post post, Member member) {
         this.content = content;
         this.createDate = createDate;
         this.post = post;
+        this.member = member;
     }
 
 }

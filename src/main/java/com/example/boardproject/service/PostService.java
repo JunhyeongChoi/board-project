@@ -1,6 +1,7 @@
 package com.example.boardproject.service;
 
 import com.example.boardproject.domain.Post;
+import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.repository.PostRepository;
@@ -45,7 +46,9 @@ public class PostService {
     }
 
     // 게시글 저장
-    public void savePost(PostRequestDto postRequestDto) {
+    public void savePost(PostRequestDto postRequestDto, Member member) {
+        postRequestDto.setMember(member);
+
         postRepository.save(postRequestDto.toEntity());
     }
 

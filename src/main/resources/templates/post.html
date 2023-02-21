@@ -10,15 +10,16 @@
 <body>
     <div th:replace="~{header :: headerFragment}"></div>
 
-    <main class="container" >
+    <main class="container">
         <header class="py-5 text-center">
             <h2 th:text="${post.title}">제목</h2>
         </header>
 
-        <div class="row g-5">
+        <div class="row g-2">
             <section class="col-md-3 col-lg-4 order-md-last">
                 <aside>
-<!--                    <p><span>Junhyeong</span></p>-->
+                    <p><span th:if="${post.member != null}" th:text="${post.member.username}">Junhyeong</span></p>
+                    <p><span th:if="${post.member == null}">null</span></p>
                     <p th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-17</p>
                 </aside>
             </section>
@@ -45,10 +46,12 @@
                 <br>
                 <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3">
                     <div class="col-md-9 col-lg-8">
-                        <textarea class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
+                        <textarea sec:authorize="isAnonymous()" disabled class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
+                        <textarea sec:authorize="isAuthenticated()" class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                     </div>
                     <div class="col-md-3 col-lg-4">
-                        <button class="btn btn-primary" type="submit">등록</button>
+                        <button type="submit" sec:authorize="isAnonymous()" disabled class="btn btn-primary">등록</button>
+                        <button type="submit" sec:authorize="isAuthenticated()" class="btn btn-primary">등록</button>
                     </div>
                 </form>
 
@@ -57,7 +60,8 @@
                         <form class="comment-form">
                             <div class="row">
                                 <div class="col-md-10 col-lg-9">
-<!--                                    <strong th:text="${comment.username}">Junhyeong</strong>-->
+                                    <strong th:if="${comment.member != null}" th:text="${comment.member.username}">Junhyeong</strong>
+                                    <strong th:if="${comment.member == null}">null</strong>
                                     <small th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-17</small>
                                     <p th:text="${comment.content}">
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
