@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,12 +54,13 @@ public class PostService {
     }
 
     // 게시글 수정
-    public void updatePost(Long postId, PostRequestDto postRequestDto) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+    public void updatePost(Post post, PostRequestDto postRequestDto) {
+        if (post.getTitle() == null || post.getContent() == null)
+            return;
 
-        if (post.getTitle() != null) post.setTitle(postRequestDto.getTitle());
-        if (post.getContent() != null) post.setContent(postRequestDto.getContent());
+        post.setTitle(postRequestDto.getTitle());
+        post.setContent(postRequestDto.getContent());
+        post.setModifyDate(LocalDateTime.now());
     }
 
     // 게시글 삭제

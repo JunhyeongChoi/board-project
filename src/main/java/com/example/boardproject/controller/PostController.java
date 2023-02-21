@@ -1,5 +1,6 @@
 package com.example.boardproject.controller;
 
+import com.example.boardproject.domain.Post;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
@@ -11,11 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -72,7 +75,39 @@ public class PostController {
     }
 
     // 게시글 수정
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String questionModify(Model model, @PathVariable("id") Long id, Principal principal) {
+        
+        Post post = postService.getPost(id);
+        // 수정페이지 들어갔을 때 내용이 그대로 채워져 있게끔 할 때 사용
+        PostRequestDto postRequestDto = PostRequestDto.toDto(post);
 
+        if(!principal.getName().equals(post.getMember().getUsername())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+        }
+
+        model.addAttribute(postRequestDto);
+
+        return "form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String questionModify(@Valid PostRequestDto postRequestDto, BindingResult bindingResult,
+                                 Principal principal, @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
+
+        Post post = postService.getPost(id);
+        if (!principal.getName().equals(post.getMember().getUsername())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
+        }
+
+        postService.updatePost(post, postRequestDto);
+        return "redirect:/post/" + id;
+    }
 
     // 게시글 삭제
 
