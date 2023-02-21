@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>새 게시글 등록</title>
+        <title>게시글</title>
         <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
     </head>
 
@@ -12,20 +12,27 @@
 
         <div class="container">
             <header class="py-5 text-center">
-                <h2>게시글 작성</h2>
+                <h2>게시글</h2>
             </header>
 
-            <form th:action="@{/post/create}" method="post">
+<!--         action 이 없으면 현재 주소를 기준으로 요청됨-->
+<!--         따라서 게시글 생성과 수정을 구분해서 유연하게 처리할 수 있음-->
+            <form method="post">
+<!--             th:form 속성이 없으므로 csrf 값이 자동으로 생성되지 않기 때문에 수동으로 생성-->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
                 <div class="row mb-3 justify-content-md-center">
                     <label for="title" class="col-sm-2 col-lg-1 col-form-label text-sm-end">제목</label>
                     <div class="col-sm-8 col-lg-9">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="제목 작성..." required>
+                        <input type="text" th:if="${postRequestDto != null}" th:value="${postRequestDto.title}" class="form-control" th:id="title" name="title" placeholder="제목 작성..." required>
+                        <input type="text" th:if="${postRequestDto == null}" class="form-control" th:id="title" name="title" placeholder="제목 작성..." required>
                     </div>
                 </div>
                 <div class="row mb-3 justify-content-md-center">
                     <label for="content" class="col-sm-2 col-lg-1 col-form-label text-sm-end">내용</label>
                     <div class="col-sm-8 col-lg-9">
-                        <textarea class="form-control" id="content" name="content" rows="10" placeholder="내용 작성..." required></textarea>
+                        <textarea th:if="${postRequestDto != null}" th:text="${postRequestDto.content}" class="form-control" th:id="content" name="content" rows="10" placeholder="내용 작성..." required></textarea>
+                        <textarea th:if="${postRequestDto == null}" class="form-control" th:id="content" name="content" rows="10" placeholder="내용 작성..." required></textarea>
                     </div>
                 </div>
                 <div class="row mb-5 justify-content-md-center">
