@@ -53,7 +53,7 @@
             <section>
                 <h5 th:text="|${#lists.size(post.comments)}개의 댓글이 있습니다.|"></h5>
                 <br>
-                <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3">
+                <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3 mb-3">
                     <div class="col-md-9 col-lg-8">
                         <textarea sec:authorize="isAnonymous()" disabled class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                         <textarea sec:authorize="isAuthenticated()" class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
@@ -77,8 +77,18 @@
                                         Lorem ipsum dolor sit amet
                                     </p>
                                 </div>
-                                <div class="col-2 mb-3 align-self-center">
-                                    <button type="submit" class="btn btn-outline-danger">삭제</button>
+                                <div class="col-3 mb-2 align-self-center">
+                                    <a class="btn btn-outline-success"
+                                       th:href="@{|/comment/modify/${comment.id}|}"
+                                       sec:authorize="isAuthenticated()"
+                                       th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
+                                       th:text="수정"></a>
+                                    <a class="delete btn btn-outline-danger"
+                                        href="javascript:void(0);"
+                                        th:data-uri="@{|/comment/delete/${comment.id}|}"
+                                        sec:authorize="isAuthenticated()"
+                                        th:if="${comment.member != null and #authentication.getPrincipal().getUsername() == comment.member.username}"
+                                        th:text="삭제"></a>
                                 </div>
                             </div>
                         </form>
