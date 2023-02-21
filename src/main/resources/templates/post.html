@@ -39,7 +39,12 @@
                        sec:authorize="isAuthenticated()"
                        th:if="${post.member != null and #authentication.getPrincipal().getUsername() == post.member.username}"
                        th:text="수정"></a>
-                    <button class="btn btn-danger me-md-2" type="submit">삭제</button>
+                    <a class="delete btn btn-danger me-md-2" role="button"
+                       href="javascript:void(0);"
+                       th:data-uri="@{|/post/delete/${post.id}|}"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${post.member != null and #authentication.getPrincipal().getUsername() == post.member.username}"
+                       th:text="삭제"></a>
                 </div>
             </form>
         </div>
@@ -104,5 +109,18 @@
 
         <div th:replace="~{footer :: footerFragment}"></div>
     </main>
+
+<!-- 삭제 버튼 클릭시 재확인 -->
+    <script type='text/javascript'>
+        const delete_elements = document.getElementsByClassName("delete");
+        Array.from(delete_elements).forEach(function(element) {
+            element.addEventListener('click', function() {
+                if(confirm("정말로 삭제하시겠습니까?")) {
+                    location.href = this.dataset.uri;
+                };
+            });
+        });
+    </script>
+
 </body>
 </html>
