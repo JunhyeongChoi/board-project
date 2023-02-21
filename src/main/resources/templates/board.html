@@ -97,7 +97,7 @@
                         <li class="page-item">
                             <a class="page-link"
                                th:text="'previous'"
-                               th:href="@{/post(page=${posts.number - 1})}"
+                               th:href="@{/post(page=${posts.number - 1}, searchType=${param.searchType}, searchValue=${param.searchValue})}"
                                th:class="'page-link' + (${posts.number} <= 0 ? ' disabled' : '')">
                                 <span>Previous</span>
                             </a>
@@ -105,14 +105,14 @@
 
                         <li th:class="page-item" th:each="pageNumber : ${barNumbers}">
                             <a th:text="${pageNumber + 1}"
-                               th:href="@{/post(page=${pageNumber})}"
+                               th:href="@{/post(page=${pageNumber}, searchType=${param.searchType}, searchValue=${param.searchValue})}"
                                th:class="'page-link' + (${pageNumber} == ${posts.number} ? ' disabled' : '')">
                             </a>
                         </li>
 
                         <li class="page-item">
                             <a th:text="'next'"
-                               th:href="@{/post(page=${posts.number + 1})}"
+                               th:href="@{/post(page=${posts.number + 1}, searchType=${param.searchType}, searchValue=${param.searchValue})}"
                                th:class="'page-link' + (${posts.number} >= ${posts.totalPages - 1} ? ' disabled' : '')">
                                 <span>Next</span>
                             </a>
