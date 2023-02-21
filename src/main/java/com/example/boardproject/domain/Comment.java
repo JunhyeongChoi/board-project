@@ -4,6 +4,7 @@ import com.example.boardproject.domain.user.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,10 +21,13 @@ public class Comment {
     @ManyToOne
     private Member member;
 
+    @Setter
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     private LocalDateTime createDate;
+
+    @Setter
     private LocalDateTime modifyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
