@@ -1,23 +1,21 @@
 package com.example.boardproject.service;
 
 import com.example.boardproject.domain.Post;
+import com.example.boardproject.domain.SearchType;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -26,10 +24,27 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    // 전체 게시글 조회
+//    // 전체 게시글 조회
+//    @Transactional(readOnly = true)
+//    public Page<PostDto> getPosts(Pageable pageable) {
+//        return postRepository.findAll(pageable).map(PostDto::toDto);
+//    }
+
     @Transactional(readOnly = true)
-    public Page<PostDto> getPosts(Pageable pageable) {
-        return postRepository.findAll(pageable).map(PostDto::toDto);
+    public Page<PostDto> getPosts(SearchType searchType, String searchKeyword, Pageable pageable) {
+        if (searchKeyword == null || searchKeyword.isBlank()) {
+            return postRepository.findAll(pageable).map(PostDto::toDto);
+        }
+
+        if (searchType == SearchType.TITLE) {
+            return postRepository.findByTitleContaining(searchKeyword, pageable).map(PostDto::toDto);
+        } else if (searchType == SearchType.CONTENT) {
+            return postRepository.findByContentContaining(searchKeyword, pageable).map(PostDto::toDto);
+        } else if (searchType == SearchType.USERNAME) {
+            return postRepository.findByMember_UsernameContaining(searchKeyword, pageable).map(PostDto::toDto);
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package com.example.boardproject.controller;
 
 import com.example.boardproject.domain.Post;
+import com.example.boardproject.domain.SearchType;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.PostDto;
 import com.example.boardproject.dto.request.PostRequestDto;
@@ -35,12 +36,17 @@ public class PostController {
 
     // 게시판 조회
     @GetMapping
-    String posts(Model model, @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<PostDto> posts = postService.getPosts(pageable);
+    String posts(Model model,
+                 @RequestParam(required = false) SearchType searchType,
+                 @RequestParam(required = false) String searchValue,
+                 @PageableDefault(size = 10, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PostDto> posts = postService.getPosts(searchType, searchValue, pageable);
         List<Integer> barNumbers = pagingService.getPagingNumbers(pageable.getPageNumber(), posts.getTotalPages());
 
         model.addAttribute("barNumbers", barNumbers);
         model.addAttribute("posts", posts);
+        model.addAttribute("searchTypes", SearchType.values());
+
         return "board";
     }
 
