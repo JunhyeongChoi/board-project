@@ -77,8 +77,8 @@ public class PostController {
     // 게시글 수정
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String questionModify(Model model, @PathVariable("id") Long id, Principal principal) {
-        
+    public String postModify(Model model, @PathVariable Long id, Principal principal) {
+
         Post post = postService.getPost(id);
         // 수정페이지 들어갔을 때 내용이 그대로 채워져 있게끔 할 때 사용
         PostRequestDto postRequestDto = PostRequestDto.toDto(post);
@@ -94,8 +94,8 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String questionModify(@Valid PostRequestDto postRequestDto, BindingResult bindingResult,
-                                 Principal principal, @PathVariable("id") Long id) {
+    public String postModify(@Valid PostRequestDto postRequestDto, BindingResult bindingResult,
+                                 Principal principal, @PathVariable Long id) {
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -110,6 +110,17 @@ public class PostController {
     }
 
     // 게시글 삭제
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String postDelete(Principal principal, @PathVariable Long id) {
+        Post post = postService.getPost(id);
+        
+        if (!principal.getName().equals(post.getMember().getUsername())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
+        }
 
+        postService.deletePost(post);
+        return "redirect:/";
+    }
 
 }

@@ -64,10 +64,7 @@ public class PostService {
     }
 
     // 게시글 삭제
-    public void deletePost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-
+    public void deletePost(Post post) {
         postRepository.delete(post);
     }
 
