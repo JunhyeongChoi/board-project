@@ -50,8 +50,8 @@ public class CommentController {
             return "post";
         }
 
-        commentService.saveComment(post, member, commentRequestDto.getContent());
-        return "redirect:/post/" + id;
+        Comment comment = commentService.saveComment(post, member, commentRequestDto.getContent());
+        return "redirect:/post/" + id + "#comment-" + comment.getId();
     }
 
     // 댓글 수정
@@ -85,7 +85,7 @@ public class CommentController {
         }
 
         commentService.updateComment(comment, commentRequestDto);
-        return "redirect:/post/" + comment.getPost().getId();
+        return "redirect:/post/" + comment.getPost().getId() + "#comment-" + id;
     }
 
     // 댓글 삭제

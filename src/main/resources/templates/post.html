@@ -65,6 +65,7 @@
                 </form>
 
                 <ul th:each="comment : ${post.comments}" class="row col-md-10 col-lg-8 pt-3">
+                    <a th:id="|comment-${comment.id}|"></a>
                     <li>
                         <form class="comment-form">
                             <div class="row">

@@ -20,7 +20,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
-    public void saveComment(Post post, Member member, String content) {
+    public Comment saveComment(Post post, Member member, String content) {
         Comment comment = Comment.builder()
                 .content(content)
                 .createDate(LocalDateTime.now())
@@ -28,7 +28,8 @@ public class CommentService {
                 .member(member)
                 .build();
 
-        commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
+        return savedComment;
     }
 
     // 댓글 조회
