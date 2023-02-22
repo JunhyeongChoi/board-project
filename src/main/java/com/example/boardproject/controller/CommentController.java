@@ -4,7 +4,6 @@ import com.example.boardproject.domain.Comment;
 import com.example.boardproject.domain.Post;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.request.CommentRequestDto;
-import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.service.CommentService;
 import com.example.boardproject.service.PostService;
 import com.example.boardproject.service.user.UserService;
@@ -35,7 +34,7 @@ public class CommentController {
     // 댓글 작성 (로그인 필요)
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public String createAnswer(@PathVariable Long id,
+    public String createComment(@PathVariable Long id,
                                @Valid CommentRequestDto commentRequestDto,
                                BindingResult bindingResult,
                                Model model,
@@ -57,7 +56,9 @@ public class CommentController {
     // 댓글 수정
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String CommentModify(Model model, @PathVariable Long id, Principal principal) {
+    public String CommentModify(Model model,
+                                @PathVariable Long id,
+                                Principal principal) {
 
         Comment comment = commentService.getComment(id);
         // 수정페이지 들어갔을 때 내용이 그대로 채워져 있게끔 할 때 사용
@@ -73,8 +74,10 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String commentModify(@Valid CommentRequestDto commentRequestDto, BindingResult bindingResult,
-                             Principal principal, @PathVariable Long id) {
+    public String commentUpdate(@Valid CommentRequestDto commentRequestDto,
+                                BindingResult bindingResult,
+                                Principal principal,
+                                @PathVariable Long id) {
         if (bindingResult.hasErrors()) {
             return "comment_form";
         }
