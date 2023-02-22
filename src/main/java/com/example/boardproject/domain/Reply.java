@@ -8,13 +8,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Entity
-public class Post {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +20,6 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
-    @Setter
-    @Column(length = 200, nullable = false)
-    private String title;
 
     @Setter
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -36,15 +30,15 @@ public class Post {
     @Setter
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment comment;
 
     @Builder
-    public Post(String title, String content, LocalDateTime createDate, Member member) {
-        this.title = title;
+    public Reply(String content, LocalDateTime createDate, Member member, Comment comment) {
         this.content = content;
         this.createDate = createDate;
         this.member = member;
+        this.comment = comment;
     }
 
 }

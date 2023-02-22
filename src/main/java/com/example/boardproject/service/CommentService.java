@@ -4,7 +4,6 @@ import com.example.boardproject.domain.Comment;
 import com.example.boardproject.domain.Post;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.request.CommentRequestDto;
-import com.example.boardproject.dto.request.PostRequestDto;
 import com.example.boardproject.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    // 댓글 저장
     public Comment saveComment(Post post, Member member, String content) {
         Comment comment = Comment.builder()
                 .content(content)
@@ -41,9 +41,6 @@ public class CommentService {
 
     // 댓글 수정
     public void updateComment(Comment comment, CommentRequestDto commentRequestDto) {
-        if (comment.getContent() == null)
-            return;
-
         comment.setContent(commentRequestDto.getContent());
         comment.setModifyDate(LocalDateTime.now());
     }

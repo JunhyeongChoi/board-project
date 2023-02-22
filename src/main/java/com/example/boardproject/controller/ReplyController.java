@@ -2,10 +2,13 @@ package com.example.boardproject.controller;
 
 import com.example.boardproject.domain.Comment;
 import com.example.boardproject.domain.Post;
+import com.example.boardproject.domain.Reply;
 import com.example.boardproject.domain.user.Member;
 import com.example.boardproject.dto.request.CommentRequestDto;
+import com.example.boardproject.dto.request.ReplyRequestDto;
 import com.example.boardproject.service.CommentService;
 import com.example.boardproject.service.PostService;
+import com.example.boardproject.service.ReplyService;
 import com.example.boardproject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,24 +26,25 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RequiredArgsConstructor
-@RequestMapping("/comment")
+@RequestMapping("/reply")
 @Controller
-public class CommentController {
+public class ReplyController {
 
-    private final PostService postService;
     private final CommentService commentService;
+    private final ReplyService replyService;
     private final UserService userService;
 
-    // 댓글 작성 (로그인 필요)
+    // 대댓글 작성 (로그인 필요)
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public String createComment(@PathVariable Long id,
-                               @Valid CommentRequestDto commentRequestDto,
+    public String createReply(@PathVariable Long id,
+                               @Valid ReplyRequestDto replyRequestDto,
                                BindingResult bindingResult,
                                Model model,
                                Principal principal) {
 
-        Post post = postService.getPost(id);
+        Comment comment = commentService.getComment(id);
+        Post post = comment.getPost();
         Member member = userService.getMember(principal.getName());
 
         if (bindingResult.hasErrors()) {
@@ -49,60 +53,60 @@ public class CommentController {
             return "post";
         }
 
-        Comment comment = commentService.saveComment(post, member, commentRequestDto.getContent());
-        return "redirect:/post/" + id + "#comment-" + comment.getId();
+        Reply reply = replyService.saveReply(comment, member, replyRequestDto.getContent());
+        return "redirect:/post/" + comment.getPost().getId() + "#reply-" + reply.getId();
     }
 
-    // 댓글 수정
+    // 대댓글 수정
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String CommentModify(Model model,
-                                @PathVariable Long id,
-                                Principal principal) {
+    public String modifyReply(Model model,
+                              @PathVariable Long id,
+                              Principal principal) {
 
-        Comment comment = commentService.getComment(id);
+        Reply reply = replyService.getReply(id);
         // 수정페이지 들어갔을 때 내용이 그대로 채워져 있게끔 할 때 사용
-        CommentRequestDto commentRequestDto = CommentRequestDto.toDto(comment);
+        ReplyRequestDto replyRequestDto = ReplyRequestDto.toDto(reply);
 
-        if(!principal.getName().equals(comment.getMember().getUsername())) {
+        if(!principal.getName().equals(reply.getMember().getUsername())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
 
-        model.addAttribute(commentRequestDto);
-        return "comment_form";
+        model.addAttribute(replyRequestDto);
+        return "reply_form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String commentUpdate(@Valid CommentRequestDto commentRequestDto,
-                                BindingResult bindingResult,
-                                Principal principal,
-                                @PathVariable Long id) {
+    public String updateReply(@Valid ReplyRequestDto replyRequestDto,
+                              BindingResult bindingResult,
+                              Principal principal,
+                              @PathVariable Long id) {
         if (bindingResult.hasErrors()) {
-            return "comment_form";
+            return "reply_form";
         }
 
-        Comment comment = commentService.getComment(id);
-        if (!principal.getName().equals(comment.getMember().getUsername())) {
+        Reply reply = replyService.getReply(id);
+        if (!principal.getName().equals(reply.getMember().getUsername())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "수정 권한이 없습니다.");
         }
 
-        commentService.updateComment(comment, commentRequestDto);
-        return "redirect:/post/" + comment.getPost().getId() + "#comment-" + id;
+        replyService.updateReply(reply, replyRequestDto);
+        return "redirect:/post/" + reply.getComment().getPost().getId() + "#reply-" + id;
     }
 
-    // 댓글 삭제
+    // 대댓글 삭제
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String commentDelete(Principal principal, @PathVariable Long id) {
-        Comment comment = commentService.getComment(id);
+    public String deleteReply(Principal principal, @PathVariable Long id) {
+        Reply reply = replyService.getReply(id);
 
-        if (!principal.getName().equals(comment.getMember().getUsername())) {
+        if (!principal.getName().equals(reply.getMember().getUsername())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "삭제 권한이 없습니다.");
         }
 
-        commentService.deleteComment(comment);
-        return "redirect:/post/" + comment.getPost().getId();
+        replyService.deleteReply(reply);
+        return "redirect:/post/" + reply.getComment().getPost().getId();
     }
 
 }
