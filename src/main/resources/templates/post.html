@@ -93,6 +93,48 @@
                                 </div>
                             </div>
                         </form>
+                        <ul class="row me-0" th:if="${not #lists.isEmpty(comment.replies)}">
+                            <li class="child-comment" th:each="reply : ${comment.replies}">
+                                <a th:id="|reply-${reply.id}|"></a>
+                                <form class="comment-delete-form">
+                                    <div class="row">
+                                        <div class="col-md-10 col-lg-9">
+                                            <strong th:text="${reply.member.username}">junhyeong</strong>
+                                            <small th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd HH:mm')}">2023-02-22</small>
+                                            <p class="mb-3" th:text="${reply.content}">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            </p>
+                                        </div>
+                                        <div class="col-3 mb-3 align-self-center">
+                                            <a class="btn btn-outline-success"
+                                               th:href="@{|/reply/modify/${reply.id}|}"
+                                               sec:authorize="isAuthenticated()"
+                                               th:if="${#authentication.getPrincipal().getUsername() == reply.member.username}"
+                                               th:text="수정"></a>
+                                            <a class="delete btn btn-outline-danger"
+                                               href="javascript:void(0);"
+                                               th:data-uri="@{|/reply/delete/${reply.id}|}"
+                                               sec:authorize="isAuthenticated()"
+                                               th:if="${#authentication.getPrincipal().getUsername() == reply.member.username}"
+                                               th:text="삭제"></a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <details class="col-md-10 col-lg-9 mb-3">
+                                <summary>대댓글 작성</summary>
+                                <form th:action="@{/reply/create/{id}(id = ${comment.id})}" method="post" class="comment-form">
+                                    <textarea sec:authorize="isAnonymous()" disabled name="content" class="form-control comment-textbox" placeholder="대댓글 작성.." rows="2" required></textarea>
+                                    <textarea sec:authorize="isAuthenticated()" name="content" class="form-control comment-textbox" placeholder="대댓글 작성.." rows="2" required></textarea>
+
+                                    <button type="submit" sec:authorize="isAnonymous()" disabled class="form-control btn btn-primary mt-2">등록</button>
+                                    <button type="submit" sec:authorize="isAuthenticated()" class="form-control btn btn-primary mt-2">등록</button>
+                                </form>
+                            </details>
+                        </div>
                     </li>
                 </ul>
 
