@@ -69,7 +69,7 @@
                                 </a>
                                 <span class="text-danger small ms-2"
                                       th:if="${#lists.size(post.comments) > 0}"
-                                      th:text="|[${#lists.size(post.comments)}]|">
+                                      th:text="|[${@commentService.getCount(post.id)}]|">
                                 </span>
                             </td>
                             <td th:if="${post.member != null}" th:text="${post.member.username}" class="user-id">Junhyeong</td>

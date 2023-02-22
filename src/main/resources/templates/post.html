@@ -51,7 +51,7 @@
 
         <div class="row g-5">
             <section>
-                <h5 th:text="|${#lists.size(post.comments)}개의 댓글이 있습니다.|"></h5>
+                <h5 th:text="|${@commentService.getCount(post.id)}개의 댓글이 있습니다.|"></h5>
                 <br>
                 <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3 mb-3">
                     <div class="col-md-9 col-lg-8">
