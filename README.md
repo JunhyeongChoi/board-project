@@ -5,18 +5,22 @@
 ## 개발 환경
 
 * Intellij IDEA Ultimate 2022.1
+
 * Gradle 7.6
 * Spring Boot 2.7.8
 * Java 11
 
 ## 기술 스택
 
-* Spring Web
 * Spring Data JPA
-* Thymeleaf
 * Spring Security
-* MySQL Driver
+* Thymeleaf
+* Spring Web
+* Validation
 * Lombok
+* MySQL Driver
+* H2 Database
+
 * Bootstrap
 * Heroku
 
