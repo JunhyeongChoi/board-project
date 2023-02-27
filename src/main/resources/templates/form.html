@@ -5,28 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>게시글</title>
         <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+        <script th:replace="~{duplication :: duplFragment}"></script>
     </head>
-
-    <script>
-        let duplicationFlag = false;
-
-        function duplicationCheck(){
-            if (duplicationFlag) {
-                return duplicationFlag;
-            } else {
-                duplicationFlag = true;
-                return false;
-            }
-        }
-
-        window.onload = function() {
-            document.getElementById('save').onclick = function() {
-                if (duplicationCheck()) return
-
-                document.getElementById('duplication').submit();
-            };
-        };
-    </script>
 
     <body>
         <div th:replace="~{header :: headerFragment}"></div>
@@ -59,7 +39,6 @@
                 <div class="row mb-5 justify-content-md-center">
                     <div class="col-sm-10 d-grid gap-2 d-sm-flex justify-content-sm-end">
                         <input type="button" id="save" value="저장" class="btn btn-primary">
-                        <!--                        <button type="submit" class="btn btn-primary">저장</button>-->
                         <button type="button" class="btn btn-danger" onclick="history.back()">취소</button>
                     </div>
                 </div>
