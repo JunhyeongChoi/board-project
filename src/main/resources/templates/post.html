@@ -6,7 +6,9 @@
     <title th:text="${post.title}">게시글</title>
     <link rel="stylesheet" type="text/css" href="/post.css">
     <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+    <script th:replace="~{duplication :: duplFragment}"></script>
 </head>
+
 <body>
     <div th:replace="~{header :: headerFragment}"></div>
 
@@ -53,14 +55,14 @@
             <section>
                 <h5 th:text="|${@commentService.getCount(post.id)}개의 댓글이 있습니다.|"></h5>
                 <br>
-                <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" class="row g-3 mb-3">
+                <form th:action="@{/comment/create/{id}(id = ${post.id})}" method="post" id="duplication" class="row g-3 mb-3">
                     <div class="col-md-9 col-lg-8">
                         <textarea sec:authorize="isAnonymous()" disabled class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                         <textarea sec:authorize="isAuthenticated()" class="form-control" name="content" placeholder="댓글 작성.." rows="3" required></textarea>
                     </div>
                     <div class="col-md-3 col-lg-4">
-                        <button type="submit" sec:authorize="isAnonymous()" disabled class="btn btn-primary">등록</button>
-                        <button type="submit" sec:authorize="isAuthenticated()" class="btn btn-primary">등록</button>
+                        <input type="button" sec:authorize="isAnonymous()" disabled value="등록" class="btn btn-primary">
+                        <input type="button" sec:authorize="isAuthenticated()" id="save" value="등록" class="btn btn-primary">
                     </div>
                 </form>
 
@@ -126,12 +128,14 @@
                         <div class="row">
                             <details class="col-md-10 col-lg-9 mb-3">
                                 <summary>대댓글 작성</summary>
-                                <form th:action="@{/reply/create/{id}(id = ${comment.id})}" method="post" class="comment-form">
+                                <form th:action="@{/reply/create/{id}(id = ${comment.id})}" method="post" th:id="duplication + ${comment.id}" class="comment-form">
                                     <textarea sec:authorize="isAnonymous()" disabled name="content" class="form-control comment-textbox" placeholder="대댓글 작성.." rows="2" required></textarea>
                                     <textarea sec:authorize="isAuthenticated()" name="content" class="form-control comment-textbox" placeholder="대댓글 작성.." rows="2" required></textarea>
 
-                                    <button type="submit" sec:authorize="isAnonymous()" disabled class="form-control btn btn-primary mt-2">등록</button>
-                                    <button type="submit" sec:authorize="isAuthenticated()" class="form-control btn btn-primary mt-2">등록</button>
+                                    <input type="button" sec:authorize="isAnonymous()" disabled value="등록" class="form-control btn btn-primary mt-2">
+                                    <input type="button" sec:authorize="isAuthenticated()" value="등록" th:id="save + ${comment.id}"
+                                           th:commentId="${comment.id}" th:onclick="insert(this.getAttribute('commentId'))"
+                                           class="form-control btn btn-primary mt-2">
                                 </form>
                             </details>
                         </div>

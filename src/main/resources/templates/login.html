@@ -5,13 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>로그인</title>
         <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+        <script th:replace="~{duplication :: duplFragment}"></script>
     </head>
 
     <body>
     <div th:replace="~{header :: headerFragment}"></div>
 
     <div class="container my-3">
-        <form th:action="@{/user/login}" method="post">
+        <form th:action="@{/user/login}" method="post" id="duplication">
             <div th:if="${param.error}">
                 <div class="alert alert-danger">
                     아아디 또는 비밀번호를 확인해 주세요.
@@ -25,7 +26,7 @@
                 <label for="password" class="form-label">비밀번호</label>
                 <input type="password" name="password" id="password" placeholder="비밀번호 작성..." class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">로그인</button>
+            <input type="button" id="save" value="로그인" class="btn btn-primary">
         </form>
     </div>
 

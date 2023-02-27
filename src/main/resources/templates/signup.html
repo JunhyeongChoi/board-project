@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>회원가입</title>
         <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+        <script th:replace="~{duplication :: duplFragment}"></script>
     </head>
 
     <body>
@@ -16,7 +17,7 @@
         </div>
     </div>
 
-    <form th:action="@{/user/signup}" th:object="${userRequestDto}" method="post" class="container">
+    <form th:action="@{/user/signup}" th:object="${userRequestDto}" method="post" id="duplication" class="container">
 <!--     검증 처리-->
         <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
@@ -37,7 +38,7 @@
             <label for="email" class="form-label">이메일</label>
             <input type="email" id="email" th:field="*{email}" placeholder="email@example.com" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">회원가입</button>
+        <input type="button" id="save" value="회원가입" class="btn btn-primary">
     </form>
 
     <div th:replace="~{footer :: footerFragment}"></div>
