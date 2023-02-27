@@ -19,7 +19,7 @@ public class UserRequestDto {
     private String username;
 
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{6,}$",
-            message = "비밀번호는 최소 6글자이며 영문, 숫자, 특수문자 하나 이상을 포함해야 합니다.")
+            message = "비밀번호는 최소 6글자이며 영문, 숫자, 특수문자(@$!%*#?&만 허용) 하나 이상을 포함해야 합니다.")
     private String password1;
 
     @NotEmpty(message = "비밀번호 확인은 필수 항목입니다.")
