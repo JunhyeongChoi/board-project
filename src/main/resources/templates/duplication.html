@@ -1,0 +1,28 @@
+<script th:fragment="duplFragment">
+    let duplicationFlag = false;
+
+    function duplicationCheck() {
+        if (duplicationFlag) {
+            return duplicationFlag;
+        } else {
+            duplicationFlag = true;
+            return false;
+        }
+    }
+
+    window.onload = function() {
+        document.getElementById('save').onclick = function() {
+            if (duplicationCheck()) return
+
+            document.getElementById('duplication').submit();
+        };
+    };
+
+    function insert(commentId) {
+        const saveId = "save" + commentId;
+        const duplicationId = "duplication" + commentId;
+
+        if (duplicationCheck()) return
+        document.getElementById(duplicationId).submit();
+    }
+</script>
