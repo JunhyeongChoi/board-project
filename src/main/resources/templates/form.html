@@ -7,6 +7,25 @@
         <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
     </head>
 
+    <script>
+        let duplicationFlag = false;
+
+        function duplicationCheck(){
+            if (duplicationFlag){
+                return duplicationFlag;
+            } else{
+                duplicationFlag = true;
+                return false;
+            }
+        }
+
+        function save() {
+            if (duplicationCheck()) return;
+
+            document.getElementById('duplication').submit();
+        };
+    </script>
+
     <body>
         <div th:replace="~{header :: headerFragment}"></div>
 
@@ -17,8 +36,8 @@
 
 <!--         action 이 없으면 현재 주소를 기준으로 요청됨-->
 <!--         따라서 게시글 생성과 수정을 구분해서 유연하게 처리할 수 있음-->
-            <form method="post">
-<!--             th:form 속성이 없으므로 csrf 값이 자동으로 생성되지 않기 때문에 수동으로 생성-->
+            <form method="post" id="duplication">
+                <!--             th:form 속성이 없으므로 csrf 값이 자동으로 생성되지 않기 때문에 수동으로 생성-->
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                 <div class="row mb-3 justify-content-md-center">
@@ -37,7 +56,8 @@
                 </div>
                 <div class="row mb-5 justify-content-md-center">
                     <div class="col-sm-10 d-grid gap-2 d-sm-flex justify-content-sm-end">
-                        <button type="submit" class="btn btn-primary">저장</button>
+                        <input type="button" id="save" value="저장" class="btn btn-primary" onclick="save();">
+                        <!--                        <button type="submit" class="btn btn-primary">저장</button>-->
                         <button type="button" class="btn btn-danger" onclick="history.back()">취소</button>
                     </div>
                 </div>
